@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col s12 m12 l3"></div>
+  <div class="col s12 m12 l6">
+    <form class="col s12" method="POST" action="/projects/newdo" enctype="multipart/form-data">
+      <h6 class="center teal white-text p-1">ADD NEW DELIVERY ORDER</h6>
+      <p id="err_message" class="red-text center hide" style="font-size:x-large;"></p>
+      <div class="row hide">
+        <div class="input-field col s12">
+          <input id="rfq_number" type="text" name="rfq_number" value="{{rfq_number}}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Eg: do-112" id="do_number" type="text" name="do_number" required>
+          <label for="do_number">DO Number</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+           <textarea id="do_detials" class="materialize-textarea" name="do_details"></textarea>
+          <label for="do_detials">DO Details</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+            <input type="text" class="datepicker" id="scheduled_jcr_date" name="scheduled_jcr_date">
+          <label for="scheduled_jcr_date">Planned JCR Date</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>Upload DO</span>
+            <input type="file" accept=".pdf, .jpeg" name="do_document" required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row right-align">
+        <button class="btn waves-effect waves-light" type="submit">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col s12 m12 l3"></div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('.datepicker').datepicker({minDate:new Date()});
+    $("#do_number").focusout((e)=>{
+      $.post( '/api/v1/projects/new_do',{do_number:$("#do_number").val()}, function( data ) {
+        if(data.message == "true"){
+          $("#err_message").removeClass("hide").addClass("error_exist").html("DO Number exist");
+        } else{
+            $("#err_message").removeClass("error_exist").addClass("hide").html("");
+        }
+      });
+    })
+    $('form').submit(function(e) {
+      if($("#err_message").hasClass("error_exist")){
+        e.preventDefault();
+      }
+      if ($('#scheduled_jcr_date').val() == '') {
+        $('#scheduled_jcr_date').addClass('invalid')
+        e.preventDefault();
+        return false;
+      } else {
+        $('#scheduled_jcr_date').removeClass('invalid')
+        return true;
+      }
+    });
+  });
+</script>

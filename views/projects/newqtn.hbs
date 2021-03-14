@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col s12 m12 l3"></div>
+  <div class="col s12 m12 l6">
+    <form class="col s12" method="POST" action="/projects/newqtn" enctype="multipart/form-data">
+      <h6 class="center teal white-text p-1">ADD NEW QUOTATION</h6>
+      <p id="err_message" class="red-text center hide" style="font-size:x-large;"></p>
+      <div class="row hide">
+        <div class="input-field col s12">
+          <input id="rfq_number" type="text" name="rfq_number" value="{{rfq_number}}" required >
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Eg: QTN-112" id="qtn_number" type="text" name="qtn_number" required >
+          <label for="qtn_number">Quotation Number</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+           <textarea id="qtn_details" class="materialize-textarea" name="qtn_details"></textarea>
+          <label for="qtn_detials">Quotation Details</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>Upload Quotation</span>
+            <input type="file" accept=".pdf,.jpeg" name="qtn_document"required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row right-align">
+        <button class="btn waves-effect waves-light" type="submit">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col s12 m12 l3"></div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $("#qtn_number").focusout((e)=>{
+    $.post( '/api/v1/projects/new_qtn',{qtn_number:$("#qtn_number").val()}, function( data ) {
+      if(data.message == "true"){
+        $("#err_message").removeClass("hide").addClass("error_exist").html("Quotation Number exist");
+      } else{
+          $("#err_message").removeClass("error_exist").addClass("hide").html("");
+      }
+    });
+  })
+  $('form').submit(function(e) {
+      if($("#err_message").hasClass("error_exist")){
+        e.preventDefault();
+      }
+  });
+});
+</script>

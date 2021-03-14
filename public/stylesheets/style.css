@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.p-1{
+  padding: 10px;
+}
+.p-2{
+  padding: 20px;
+}
+.p-5{
+  padding: 50px;
+}
+.pt-5{
+  padding-top: 50px;
+}
+.pr-5{
+  padding-right: 50px;
+}
+.pl-5{
+  padding-left: 50px;
+}
+.p-10{
+  padding: 100px;
+}
+.ml-5{
+  margin-left: 50px;
+}
+.mr-5{
+  margin-right: 50px;
+}
+.mt-5{
+  margin-top: 50px;
+}
+.inline-radio{
+  display: inline;
+}
+
+.label{
+  color: grey;
+}

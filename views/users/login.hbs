@@ -1,0 +1,102 @@
+<style>
+
+
+    body {
+      background: #fff;
+    }
+
+    .input-field input[type=date]:focus + label,
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=email]:focus + label,
+    .input-field input[type=password]:focus + label {
+      color: #e91e63;
+      
+    }
+
+
+  </style>
+        <div class="row">
+            <div class="col m12 l4 s1"></div>
+            <div class="col m12 l4 s10">
+                <div class="z-depth-1 grey lighten-4 row p-2 " >
+                     <h5 class="indigo-text center pt-5">Please, login into your account</h5>
+                    <form class="col s12" method="post" >
+                        <div class='row'>
+                            <div class='col s12 center'>
+                                <p class="red-text darken-3 " id="response_text"></p>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='input-field col s12'>
+                            <input class='validate' type='email' name='userEmail' id='user_email' />
+                            <label for='user_email'>Enter your email</label>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='input-field col s12'>
+                                <input class='validate' type='password' name='userPassword' id='user_password' />
+                                <label for='user_password'>Enter your password</label>
+                            </div>
+                            <label style='float: right;'>
+                                <a class='pink-text' href='#!'><b>Forgot Password?</b></a>
+                            </label>
+                        </div>
+                        <br />
+                        <center>
+                            <div class='row'>
+                            <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+                            </div>
+                        </center>
+                    </form>
+                </div>
+                <a href="/users/signup" >Create account</a>
+            </div>
+            
+            <div class="col m12 l4"></div>
+        </div>
+       
+
+<script>
+     $( document ).ready(function() {
+        $('select').formSelect();
+        $( "form" ).submit(function( event ) {
+            event.preventDefault();
+            let userEmail = $('#user_email').val();
+            let userPassword = $('#user_password').val();
+            if(!userEmail){
+                $('#response_text').addClass('red-text').text("Email is required");
+                $('#user_email').focus();
+                return;
+            } else
+            if(!userPassword){
+                $('#response_text').addClass('red-text').text("Password is required");
+                $('#user_password').focus();
+                return;
+            }else{
+            let data = {
+                userEmail,
+                userPassword
+            }
+            $.post( "login", data, function( data ) {
+                if(data.error){
+                     $('#response_text').addClass('red-text').text(data.message);
+                     return;
+                }else{
+                    $.when($('#response_text').addClass('green-text').text("You are successfully logged in").delay(2000).fadeOut(400)).then(()=>{
+                        //$(location).attr('href', '/');
+                        window.location.href ="/";
+                    });
+ 
+                }
+                
+            });
+
+            }
+           
+        });
+    });
+
+
+</script>
+
+ 

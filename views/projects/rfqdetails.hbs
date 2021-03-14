@@ -1,0 +1,90 @@
+<style>
+    .collection-item{
+        font-size: large;
+        align-items: flex-start !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col s12 m12 l3"></div>
+    <div class="col s12 m12 l6">
+        <div class="card teal darken-1">
+            <a class="waves-effect waves-light btn left" href="/projects">BACK </a>
+            <div class="card-content white-text center">
+                <span class="card-title">{{rfq_details.rfq_number}}</span>
+                <hr />
+                <div class="collection ">
+                    <a href="#!" class="collection-item">Customer Name : {{rfq_details.customer_name}}</a>
+                    <a href="#!" class="collection-item">RFQ Details : {{rfq_details.rfq_details}}</a>
+                    <a href="#!" class="collection-item">Scheduled Quotation Date is : {{rfq_details.scheduled_qtn_date}}</a>
+                    {{!-- <a href="/projects/download/rfq/{{rfq_details.rfq_file_name}}" class="collection-item "> RFQ - File Donload  <i class="material-icons">file_download</i></a> --}}
+                    <a href="/uploads/rfq/{{rfq_details.rfq_file_name}}" target="_blank" class="collection-item ">  RFQ - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    <a href="#!" class="collection-item">RFQ - Created By : {{rfq_details.rfq_creator}}</a>
+                    <a href="#!" class="collection-item">RFQ - Created on : {{rfq_details.createdAt}}</a>
+
+                    {{#if qtn_details}} 
+                    <span class="card-title">{{qtn_details.qtn_number}}</span>
+                    <a href="#!" class="collection-item">Quotation Details : {{qtn_details.qtn_details}}</a>
+                    {{!-- <a href="/projects/download/qtn/{{rfq_details.rfq_file_name}}" class="collection-item "> RFQ - File Donload  <i class="material-icons">file_download</i></a> --}}
+                    <a href="/uploads/qtn/{{qtn_details.qtn_file_name}}" target="_blank" class="collection-item ">  Quotation - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    {{!-- <a href="#!" class="collection-item">Quotation - Download : {{qtn_details.qtn_file_name}}</a> --}}
+                    <a href="#!" class="collection-item">Quotation - Created By : {{qtn_details.qtn_creator}}</a>
+                    <a href="#!" class="collection-item">Quotation - Submitted on : {{qtn_details.createdAt}}</a>
+                    {{/if}}
+                    
+                    {{#if po_details}} 
+                    <span class="card-title">{{po_details.po_number}}</span>
+                    <a href="#!" class="collection-item">PO Details : {{po_details.po_details}}</a>
+                    <a href="#!" class="collection-item">Scheduled Material delivery date is : {{po_details.scheduled_do_date}}</a>
+                    <a href="#!" class="collection-item">Scheduled Job completion date is : {{po_details.scheduled_jcr_date}}</a>
+                    {{!-- <a href="#!" class="collection-item">PO - Download : {{po_details.po_file_name}}</a> --}}
+                    <a href="/uploads/po/{{po_details.po_file_name}}" target="_blank" class="collection-item ">  Purchase Order - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    <a href="#!" class="collection-item">PO - Uploaded By : {{po_details.po_creator}}</a>
+                    <a href="#!" class="collection-item">PO - Received on : {{po_details.createdAt}}</a>
+                    {{/if}}
+                    
+                    {{#if do_details}} 
+                    <span class="card-title">{{do_details.do_number}}</span>
+                    <a href="#!" class="collection-item">Material delivery Details : {{do_details.do_details}}</a>
+                    <a href="#!" class="collection-item">Scheduled Job completion date is : {{do_details.scheduled_jcr_date}}</a>
+                    {{!-- <a href="#!" class="collection-item">DO - Download : {{do_details.do_file_name}}</a> --}}
+                    <a href="/uploads/do/{{do_details.do_file_name}}" target="_blank" class="collection-item ">  DO - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    <a href="#!" class="collection-item">DO - Uploaded By : {{do_details.do_creator}}</a>
+                    <a href="#!" class="collection-item">DO - Uploaded on : {{do_details.createdAt}}</a>
+                    {{/if}}
+                    
+                    {{#if jcr_details}}            
+                    <span class="card-title">{{jcr_details.jcr_number}}</span>
+                    <a href="#!" class="collection-item">Job completion Details : {{jcr_details.jcr_details}}</a>
+                    <a href="#!" class="collection-item">Scheduled Invoice date is : {{jcr_details.scheduled_inv_date}}</a>
+                    {{!-- <a href="#!" class="collection-item">JCR - Download : {{jcr_details.jcr_file_name}}</a> --}}
+                    <a href="/uploads/jcr/{{jcr_details.jcr_file_name}}" target="_blank" class="collection-item ">  JCR - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    <a href="#!" class="collection-item">JCR - Uploaded By : {{jcr_details.jcr_creator}}</a>
+                    <a href="#!" class="collection-item">JCR - Uploaded on : {{jcr_details.createdAt}}</a>
+                    {{/if}}
+                    {{#if inv_details}}                  
+                    <span class="card-title">{{inv_details.inv_number}}</span>
+                    <a href="#!" class="collection-item">Invoice Details : {{inv_details.inv_details}}</a>
+                    <a href="#!" class="collection-item">Payment Due date is : {{inv_details.payment_due_date}}</a>
+                    {{!-- <a href="#!" class="collection-item">Invoice - Download : {{inv_details.inv_file_name}}</a> --}}
+                    <a href="/uploads/inv/{{inv_details.inv_file_name}}" target="_blank" class="collection-item ">  Invoice - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    <a href="#!" class="collection-item">Invoice - Uploaded By : {{inv_details.inv_creator}}</a>
+                    <a href="#!" class="collection-item">Invoice - Uploaded on : {{inv_details.createdAt}}</a>
+                    {{/if}}
+                    
+                    {{#if rv_details}}                  
+                    <span class="card-title">{{rv_details.rv_number}}</span>
+                    <a href="#!" class="collection-item">Payment Details : {{rv_details.rv_details}}</a>
+                    <a href="/uploads/rv/{{rv_details.rv_file_name}}" target="_blank" class="collection-item "> Receipt Voucher - File View  <i class="material-icons">picture_as_pdf</i></a>
+                    {{!-- <a href="#!" class="collection-item">Payment Voucher - Download : {{rv_details.rv_file_name}}</a> --}}
+                    <a href="#!" class="collection-item">Payment Voucher - Uploaded By : {{rv_details.rv_creator}}</a>
+                    <a href="#!" class="collection-item">Payment Voucher - Uploaded on : {{rv_details.createdAt}}</a>
+                    {{/if}}
+                </div>
+            
+            </div>
+        </div>
+        
+    </div>
+   
+</div>

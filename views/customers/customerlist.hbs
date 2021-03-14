@@ -1,0 +1,41 @@
+<div class="row p-1">
+    <div class="col s12 m12 l12">
+        <a href="/customers/newcustomer"  class="waves-effect waves-light btn green accent-4">ADD A CUSTOMER</a>
+    </div>
+</div>
+
+<table class="highlight centered responsive-table">
+    <thead>
+        <tr>
+            <th>SL#</th>
+            <th>Customer Name</th>
+            <th>Address</th>
+            <th>Loaction</th>
+            <th>VAT Number</th>
+            <th>VAT Cert</th>
+            <th>RFQ List</th>
+        </tr>
+    </thead>
+
+    <tbody>
+       {{#each customer_list}}
+        <tr>
+            <td>{{add @index 1}}</td>
+            <td>{{this.customer_name}}</td>
+            <td>{{this.customer_address}}</td>
+            <td>{{this.customer_location}}</td>
+            <td>{{this.customer_vat}}</td>
+            <td> <a href="/uploads/vat/{{this.vat_cert}}" target="_blank">  View VAT Certificate  <i class="material-icons">picture_as_pdf</i></a></td>
+           
+            <td>
+                {{#each this.rfq_list}}
+                <div class="row">
+                     <a href="/projects/rfq/{{this}}">{{this}}</a> ,
+                </div>
+                {{/each}}
+            </td>
+            
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col s12 m12 l3"></div>
+  <div class="col s12 m12 l6">
+    <form class="col s12" method="POST" action="/customers/newcustomer" enctype="multipart/form-data">
+      <h6 class="center teal white-text p-1">ADD NEW CUSTOMER</h6>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Eg: Scientechnic" id="customer_name" type="text" name="customer_name" required>
+          <label for="customer_name">Customer Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+           <textarea id="customer_address" class="materialize-textarea" name="customer_address"></textarea>
+          <label for="customer_address">Customer Address</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+            <select name="customer_location">
+                <option value=""selected>Select customer Emirates</option>
+                <option value="Abudhabi">Abudhabi</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Sharjah">Sharjah</option>
+                <option value="Ajman">Ajman</option>
+                <option value="Umm Al Quain">Umm Al Quain</option>
+                <option value="Ras Al Khaima">Ras Al Khaima</option>
+                <option value="Fujeirah">Fujeirah</option>
+            </select>
+        </div>
+      </div>
+        <div class="row">
+        <div class="input-field col s12">
+           <textarea id="customer_vat" class="materialize-textarea" name="customer_vat"></textarea>
+          <label for="customer_vat">VAT Number</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>Upload VAT Certificate</span>
+            <input type="file" accept=".pdf, jpeg" name="vat_cert" required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row right-align">
+        <button class="btn waves-effect waves-light" type="submit">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col s12 m12 l3"></div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('select').formSelect();
+
+  });
+</script>

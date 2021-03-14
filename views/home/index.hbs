@@ -1,0 +1,321 @@
+<style>
+@media only screen and (max-width: 600px){
+    .chart-container {
+    height: 200px;
+    width: 400px;
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    }
+     .yearly-chart-container {
+    overflow: hidden !important ;
+    }
+}
+
+@media only screen and (min-width: 600px){
+    .chart-container {
+    height: 600px;
+    width: 600px;
+    }
+
+}
+
+</style>
+
+<div class="row mt-5">
+    <div class="chart-container center col m12 l6 s12">
+        <canvas id="overall_rfq"></canvas>
+    </div>
+    <div class="yearly-chart-container col m12 l6 s12">
+        <canvas id="yearly_rfq" ></canvas>
+    </div>
+</div>
+<div class="row ">
+    <div class="chart-container col m12 l6 s12">
+        <canvas id="rfq_status"></canvas>
+    </div>
+    <div class="chart-container col m12 l6 s12">
+        <canvas id="qtn_status"></canvas>
+    </div>
+
+</div>
+<div class="row ">
+    <div class="chart-container col m12 l6 s12">
+        <canvas id="po_status" style="height: 500px !important;"></canvas>
+    </div>
+    <div class="chart-container col m12 l6 s12">
+        <canvas id="inv_status"></canvas>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
+
+<script>
+ 
+async function getOverallStatus(){
+    const response = await fetch('/api/v1/projects/overall', {
+        method:"GET",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+      
+    });
+    return response.json();
+}
+
+
+getOverallStatus().then(data =>{
+    new Chart(document.getElementById('overall_rfq').getContext('2d'), {
+        type: 'doughnut',
+        data: data,
+        options:{
+            responsive: true,
+            title: {
+            display: true,
+            position: "top",
+            text: "OVERALL PROJECT STATISTICS",
+            fontSize: 14,
+            fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 14
+                }
+            }
+        },
+    })
+}).catch(err =>{
+    console.log(err);
+})
+
+
+async function getYearlyStatistics(){
+    const response = await fetch('/api/v1/projects/yearly', {
+        method:"POST",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+        body:JSON.stringify({year:2021})
+      
+    });
+    return response.json();
+}
+let ctx = document.getElementById("yearly_rfq");
+ctx.height = 300;
+getYearlyStatistics().then(data =>{
+  new Chart(document.getElementById("yearly_rfq"), {
+    type: 'bar',
+    data: {
+      labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+      datasets:data?data:[],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1,
+                        height:500,
+                        
+                    }
+                }],
+            ticks: {
+                min: 0,
+                stepSize: 1,
+                barThickness: 100
+            }
+        },
+        legend: { display: true, position: "bottom", },
+        fontSize: 14,
+        fontColor: "#111",
+        title: {
+            display: true,
+            text: 'MONTHLY PROJECTS STATISTICS',
+            fontSize: 14,
+            fontColor: "#111",
+        },
+        maintainAspectRatio: false,
+
+    }
+});
+}).catch(err =>{
+    console.log(err)
+})
+
+async function getRfqStatus(){
+    const response = await fetch('/api/v1/projects/rfq_status', {
+        method:"GET",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+      
+    });
+    return response.json();
+}
+
+getRfqStatus().then(data =>{
+    new Chart(document.getElementById('rfq_status').getContext('2d'), {
+        type: 'doughnut',
+        data: data,
+        options:{
+            responsive: true,
+            title: {
+            display: true,
+            position: "top",
+            text: "RFQ STATISTICS",
+            fontSize: 14,
+            fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 14
+                }
+            }
+        },
+    })
+}).catch(err =>{
+    console.log(err);
+})
+
+async function getQtnStatus(){
+    const response = await fetch('/api/v1/projects/qtn_status', {
+        method:"GET",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+      
+    });
+    return response.json();
+}
+
+getQtnStatus().then(data =>{
+    new Chart(document.getElementById('qtn_status').getContext('2d'), {
+        type: 'doughnut',
+        data: data,
+        options:{
+            responsive: true,
+            title: {
+            display: true,
+            position: "top",
+            text: "QUOTATION STATISTICS",
+            fontSize: 14,
+            fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 14
+                }
+            }
+        },
+    })
+}).catch(err =>{
+    console.log(err);
+})
+
+async function getWorkStatus(){
+    const response = await fetch('/api/v1/projects/po_status', {
+        method:"GET",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+      
+    });
+    return response.json();
+}
+
+getWorkStatus().then(data =>{
+    new Chart(document.getElementById('po_status').getContext('2d'), {
+        type: 'doughnut',
+        data: data,
+        options:{
+            responsive: true,
+            title: {
+            display: true,
+            position: "top",
+            text: "PO vs EXECUTION STATISTICS",
+            fontSize: 14,
+            fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 14
+                }
+            }
+        },
+    })
+}).catch(err =>{
+    console.log(err);
+})
+
+async function getInvStatus(){
+    const response = await fetch('/api/v1/projects/inv_status', {
+        method:"GET",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+      
+    });
+    return response.json();
+}
+
+getInvStatus().then(data =>{
+    new Chart(document.getElementById('inv_status').getContext('2d'), {
+        type: 'doughnut',
+        data: data,
+        options:{
+            responsive: true,
+            title: {
+            display: true,
+            position: "top",
+            text: "INVOICE VS PAYMENT STATISTICS",
+            fontSize: 14,
+            fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 14
+                }
+            }
+        },
+    })
+}).catch(err =>{
+    console.log(err);
+})
+
+
+</script>

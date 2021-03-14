@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col s12 m12 l3"></div>
+  <div class="col s12 m12 l6">
+    <form class="col s12" method="POST" action="/projects/newpo" enctype="multipart/form-data">
+      <h6 class="center teal white-text p-1">ADD NEW PURCHASE ORDER (PO)</h6>
+      <p id="err_message" class="red-text center hide" style="font-size:x-large;"></p>
+      <div class="row hide">
+        <div class="input-field col s12">
+          <input id="rfq_number" type="text" name="rfq_number" value="{{rfq_number}}" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Eg: PO-112" id="po_number" type="text" name="po_number" required>
+          <label for="po_number">PO Number</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+           <textarea id="po_detials" class="materialize-textarea" name="po_details"></textarea>
+          <label for="po_detials">PO Details</label>
+        </div>
+      </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <div class="row">
+                    <div class="col s6 m12 l3">
+                      <p class="label">Material delivery required</p>
+                    </div>
+                    <div class="col s3 m12 l2">
+                        <p>
+                            <label>
+                                <input name="do_required" type="radio" checked value="yes"/>
+                                <span>YES</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s3 m12 l2">
+                        <p>
+                            <label>
+                                <input name="do_required" type="radio" value="no"/>
+                                <span>NO</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <div class="row" id="do_date">
+        <div class="input-field col s12">
+            <input type="text" class="datepicker" id="scheduled_do_date" name="scheduled_do_date">
+          <label for="scheduled_do_date">Planned Material Delivery Date</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+            <input type="text" class="datepicker" id="scheduled_jcr_date" name="scheduled_jcr_date">
+          <label for="scheduled_jcr_date">Planned Job Completion Date</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field col s12">
+          <div class="btn">
+            <span>UPLOAD PO</span>
+            <input type="file" accept=".pdf, .jpeg" name="po_document" required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row right-align">
+        <button class="btn waves-effect waves-light" type="submit">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col s12 m12 l3"></div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.datepicker').datepicker({minDate:new Date()});
+    $('input[name=do_required]').change(()=>{
+      if($('input[name=do_required]:checked').val() == "no"){
+        $('#do_date').addClass("hide")
+      }else{
+        $('#do_date').removeClass("hide")
+      }
+    });
+    $("#po_number").focusout((e)=>{
+      $.post( '/api/v1/projects/new_po',{po_number:$("#po_number").val()}, function( data ) {
+        if(data.message == "true"){
+          $("#err_message").removeClass("hide").addClass("error_exist").html("PO Number exist");
+        } else{
+            $("#err_message").removeClass("error_exist").addClass("hide").html("");
+        }
+      });
+    })
+    $('form').submit(function(e) {
+      if($("#err_message").hasClass("error_exist")){
+        e.preventDefault();
+      }
+      if($('input[name=do_required]:checked').val() == "yes"){
+            if ($('#scheduled_do_date').val() == '') {
+            $('#scheduled_do_date').addClass('invalid')
+            e.preventDefault();
+            return false;
+          } else {
+            $('#scheduled_do_date').removeClass('invalid')
+          }
+      }
+      if ($('#scheduled_jcr_date').val() == '') {
+        $('#scheduled_jcr_date').addClass('invalid')
+        e.preventDefault();
+        return false;
+      } else {
+        $('#scheduled_jcr_date').removeClass('invalid')
+      }
+      //console.log($('input[name=do_required]:checked').val())
+    });
+  });
+</script>

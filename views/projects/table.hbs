@@ -1,0 +1,192 @@
+<style>
+    .completed{
+        background-color: green;
+        color: white;
+    }
+    .pending{
+        background-color:#ffab00 ;
+        color: white;
+    }
+    .open{
+        background-color: blue ;
+        color: white;
+    }
+    td{
+       height: 60px;
+    }
+</style>
+<div class="row p-1">
+        <form action="/projects" method="GET">
+        <div class="col s12 m12 l3">
+            <select name="customer_name" >
+                <option value="{{filter.customer_name}}" selected> {{#if filter.customer_name}}{{filter.customer_name}}{{else}}Filter Customer{{/if}}</option>
+                {{#if filter.customer_name}}<option value=""> Select All</option>{{/if}}
+                {{#each customer_list}}
+                <option value="{{this.customer_name}}">{{this.customer_name}}</option>
+                {{/each}}
+                
+            </select>
+        </div>
+        <div class="col s12 m12 l3">
+            <select name="rfq_status" >
+                <option value="{{filter.rfq_status}}" selected>{{#if filter.rfq_status}}{{capitalize  filter.rfq_status}}{{else}}Filter Status{{/if}}</option>
+                 {{#if filter.rfq_status}}<option value=""> Select All</option>{{/if}}
+                <option value="open">Open</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <div class="col s6 m6 l2">
+            <button class="btn waves-effect waves-light" type="submit" >FILTER
+                <i class="material-icons right">search</i>
+            </button>
+        </div>
+        <div class="col s6 m6 l2">
+            <a href="/projects/newrfq"  class="waves-effect waves-light btn green accent-4 right">ADD RFQ</a>
+        </div>
+    </form>
+</div>
+
+
+<ul class="pagination">
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    {{#each total_item}}
+    <li class="{{#if this.current_page }}active {{/if}}"><a href="/projects?page_number={{this.page_number}}">{{add this.page_number 1}}</a></li>
+    {{/each}}
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>
+<table class="highlight centered responsive-table" style="overflow-x:auto;">
+    <thead>
+        <tr>
+            <th>SL#</th>
+            <th>RFQ</th>
+            <th>CUSTOMER</th>
+            <th>QUOTATION</th>
+            <th>PO</th>
+            <th>DELIVERY</th>
+            <th>EXECUTION</th>
+            <th>INVOICE</th>
+            <th>PAYMENT</th>
+            <th>STATUS</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each rfq_list}}
+        <tr>
+            <td>{{add @index 1}}</td>
+            <td><a class="modal-trigger" href="/projects/rfq/{{this.rfq_number}}">{{this.rfq_number}}</a></td>
+             <td><a class="modal-trigger" href="/projects/rfq/{{this.rfq_number}}">{{this.customer_name}}</a></td>
+            {{#if this.qtn_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.qtn_number}}</a></td>
+            {{else}}
+                {{#if this.rfq_number }}
+                    <td>
+                        <a href="/projects/newqtn?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD QTN</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}
+                    </td>
+                {{else}}
+                    <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            {{#if this.po_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.po_number}}</a></td>
+            {{else}}
+                {{#if this.qtn_number }}
+                    <td>
+                        <a href="/projects/newpo?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD PO</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}
+                    </td>
+                {{else}}
+                    <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            {{#if this.do_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.do_number}}</a></td>
+            {{else}}
+                {{#if this.scheduled_do_date }}
+                    <td>
+                        <a href="/projects/newdo?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD DO</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}
+                    </td>
+                {{else}}
+                    <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            {{#if this.jcr_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.jcr_number}}</a></td>
+            {{else}}
+                {{#if this.scheduled_jcr_date }}
+                    {{#unless this.scheduled_do_date }}
+                    <td>
+                        <a href="/projects/newjcr?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD JCR</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}
+                    </td>
+                    {{else}}
+                    <td><a href="#">-</a></td>
+                    {{/unless}}
+                {{else}}
+                <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            {{#if this.inv_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.inv_number}}</a></td>
+            {{else}}
+                {{#if this.jcr_number }}
+                    <td>
+                        <a href="/projects/newinvoice?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD Inv</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}
+                    </td>
+                {{else}}
+                    <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            {{#if this.rv_number}}
+                <td><a href="/projects/rfq/{{this.rfq_number}}">{{this.rv_number}}</a></td>
+            {{else}}
+                 {{#if this.inv_number }}
+                    <td>
+                        <a href="/projects/newpayment?rfq_number={{rfq_number}}"  class="waves-effect waves-light btn {{this.rfq_status}}  accent-4">ADD RV</a>
+                        {{#eq this.rfq_status "pending"}}
+                        <span class="badge {{this.rfq_status}} white-text">{{this.rfq_pending_days}} Days Pending </span>
+                        {{/eq}}    
+                    </td>
+                {{else}}
+                    <td><a href="#">-</a></td>
+                {{/if}}
+            {{/if}}
+            <td class="{{this.rfq_status}}">{{this.rfq_message}}</td>
+        </tr>
+        {{/each}}
+</table>
+
+
+<script>
+
+ $(document).ready(function(){
+    $('select').formSelect();
+  });
+</script>
+       
+
+
+ {{!-- <!-- Modal Structure -->
+  <div id="rfq_modal" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div> --}}

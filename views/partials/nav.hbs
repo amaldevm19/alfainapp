@@ -1,0 +1,80 @@
+
+<style>
+@media only screen and (max-width: 600px){
+    nav{
+      width: 100% !important;
+    }
+    .btn-block {
+    width: 100%;
+  }
+}
+</style>
+  <nav >
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo">ALFAIN</a>
+      <a href="#" class="brand-logo center hide-on-med-and-down">{{heading}}</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger "><i class="large material-icons" >menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+       
+        <li><a href="/">HOME</a></li>
+        <li><a href="/projects">PROJECT LIST</a></li>
+        <li><a href="/customers">CUSTOMER LIST</a></li>
+        {{#if session.user}}
+        <li><a href="/users/logout">LOGOUT</a></li>
+        {{else}}
+        <li><a href="/users/login">LOGIN</a></li>
+        <li><a href="/users/signup">SIGNUP</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+  <div class="row">
+    <div class="col s12">
+      <button class="add-button btn btn-block waves-effect waves-light ">Add to home screen</button>
+    </div>
+  </div>
+<ul class="sidenav" id="mobile-demo">
+  <li ><a href="/" > HOME</a></li>
+  <li><a href="/projects">PROJECT LIST</a></li>
+  <li><a href="/customers">CUSTOMER LIST</a></li>
+  {{#if session.user}}
+  <li><a href="/users/logout">LOGOUT</a></li>
+  {{else}}
+  <li><a href="/users/login">LOGIN</a></li>
+  <li><a href="/users/signup">SIGNUP</a></li>
+  {{/if}}
+</ul>
+<script>
+    let deferredPrompt;
+    const addBtn = document.querySelector('.add-button');
+    addBtn.style.display = 'none';
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log("before install event")
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        // Update UI to notify the user they can add to home screen
+        addBtn.style.display = 'block';
+
+        addBtn.addEventListener('click', (e) => {
+            // hide our user interface that shows our A2HS button
+            addBtn.style.display = 'none';
+            // Show the prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+                } else {
+                console.log('User dismissed the A2HS prompt');
+                }
+                deferredPrompt = null;
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>
